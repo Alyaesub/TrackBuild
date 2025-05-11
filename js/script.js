@@ -6,7 +6,9 @@ const buttonAddProject = document.getElementById("addProjectBtn");
 const tableProject = document.getElementById("projectTableBody");
 const projectSelect = document.getElementById("projectSelect");
 
-//fonction qui ajoute un nouveau projet dans le tableau en dessous le l'input
+/**
+ * fonction qui ajoute un nouveau projet dans le tableau en dessous le l'input
+ */
 buttonAddProject.addEventListener("click", () => {
 	const projectName = inputNewProject.value.trim();
 	if (projectName === "") {
@@ -31,13 +33,16 @@ buttonAddProject.addEventListener("click", () => {
 });
 
 let projects = [];
-
-//function qui sauvegarde dans localstorage
+/**
+ * function qui sauvegarde dans localstorage
+ */
 function saveProjects() {
 	localStorage.setItem("projects", JSON.stringify(projects));
 }
 
-//fonction qui charge depuis le localstorage
+/**
+ * fonction qui charge depuis le localstorage
+ */
 function loadProjects() {
 	const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
 	projects = storedProjects;
@@ -73,7 +78,9 @@ function loadProjects() {
 loadProjects();
 choiceProjectSelect();
 
-//fonction pour supprimer un projet du localstorage
+/**
+ * fonction pour supprimer un projet du localstorage
+ */
 function deleteProject(projectName) {
 	// Supprimer le projet du tableau
 	projects = projects.filter((p) => p.name !== projectName);
@@ -85,7 +92,9 @@ function deleteProject(projectName) {
 	loadProjects();
 }
 
-//function qui permet de modifier le nom d'un projet
+/**
+ * function qui permet de modifier le nom d'un projet
+ */
 function modifyProject(projectName) {
 	const newName = prompt("Nouveau nom du projet :", projectName);
 	if (!newName || newName.trim() === "") return; // si annule ou vide
@@ -99,7 +108,9 @@ function modifyProject(projectName) {
 	}
 }
 
-//fonction qui permet d'afficher et de choisr un projet dans le selecte "project-select"
+/**
+ * fonction qui permet d'afficher et de choisr un projet dans le selecte "project-select"
+ */
 function choiceProjectSelect() {
 	projects = JSON.parse(localStorage.getItem("projects")) || [];
 	(projectSelect.innerHTML =
@@ -112,7 +123,9 @@ function choiceProjectSelect() {
 		});
 }
 
-//fonction qui permet de selectionner un projet dans le select et de l'afficher dans historique de session
+/**
+ * fonction qui permet de selectionner un projet dans le select et de l'afficher dans historique de session
+ */
 function displayProjectHistory(projectName) {
 	//trouve le bon fichier
 	const project = projects.find((p) => p.name === projectName);
@@ -138,15 +151,21 @@ function displayProjectHistory(projectName) {
 		const ligne = document.createElement("li");
 		const hours = Math.floor(session.duration / 3600);
 		const minutes = Math.floor((session.duration % 3600) / 60);
-		const duree = `${hours}h ${minutes}min`;
+		const secondes = session.duration % 60;
+		const duree = `${hours}h ${minutes}min ${secondes}sec`;
 		const date = new Date(session.date).toLocaleString();
 		ligne.textContent = `session de ${duree} le ${date}`;
 		historyList.appendChild(ligne);
 	});
 }
 
-//l'EventListener de la fonction displayProjectHostory
+/**
+ * l'EventListener de la fonction displayProjectHostory
+ */
 projectSelect.addEventListener("change", () => {
 	selectedProjectName = projectSelect.value;
 	displayProjectHistory(selectedProjectName);
+
+	// Activation du bouton
+	startStopBtn.disabled = false;
 });

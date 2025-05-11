@@ -52,7 +52,8 @@
 
     <!-- Historique des sessions -->
     <div>
-      <h3>Historique des sessions</h3>
+      <h3>Historique des sessions :</h3>
+      <h4 id="projectHistoryTitle">Aucun projet séléctionné.</h4>
       <ul id="historyList" class="list-group">
         <!-- Les sessions seront ajoutées ici -->
       </ul>

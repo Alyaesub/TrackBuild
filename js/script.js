@@ -4,6 +4,7 @@
 const inputNewProject = document.getElementById("newProjectInput");
 const buttonAddProject = document.getElementById("addProjectBtn");
 const tableProject = document.getElementById("projectTableBody");
+const projectSelect = document.getElementById("projectSelect");
 
 //fonction qui ajoute un nouveau projet dans le tableau en dessous le l'input
 buttonAddProject.addEventListener("click", () => {
@@ -70,6 +71,7 @@ function loadProjects() {
 	});
 }
 loadProjects();
+choiceProjectSelect();
 
 //fonction pour supprimer un projet du localstorage
 function deleteProject(projectName) {
@@ -96,3 +98,18 @@ function modifyProject(projectName) {
 		loadProjects();
 	}
 }
+
+//fonction qui permet d'afficher et de choisr un projet dans le selecte "project-select"
+function choiceProjectSelect() {
+	projects = JSON.parse(localStorage.getItem("projects")) || [];
+	(projectSelect.innerHTML =
+		"<option selected disabled>Choisis un projet</option>"),
+		projects.forEach((project) => {
+			const option = document.createElement("option");
+			option.value = project.name;
+			option.textContent = project.name;
+			projectSelect.appendChild(option);
+		});
+}
+
+//fonction qui permet de selectionner un projet dans le select et de l'afficher dans historique de session

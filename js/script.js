@@ -113,3 +113,40 @@ function choiceProjectSelect() {
 }
 
 //fonction qui permet de selectionner un projet dans le select et de l'afficher dans historique de session
+function displayProjectHistory(projectName) {
+	//trouve le bon fichier
+	const project = projects.find((p) => p.name === projectName);
+
+	//cible les element html
+	const historyList = document.getElementById("historyList");
+	const historyTitle = document.getElementById("projectHistoryTitle");
+
+	//reinitialise l'affichage
+	historyList.innerHTML = "";
+	historyTitle.textContent = `Historique du projet : ${projectName}`;
+
+	//verifie la sessions du prijet selectionné
+	if (!project.sessions || project.sessions.length === 0) {
+		const message = document.createElement("li");
+		message.textContent = "Pas encore de session pour ce projet";
+		historyList.appendChild(message);
+		return;
+	}
+
+	//sinon on affiche les session du projet
+	project.sessions.forEach((session) => {
+		const ligne = document.createElement("li");
+		const hours = Math.floor(session.duration / 3600);
+		const minutes = Math.floor((session.duration % 3600) / 60);
+		const duree = `${hours}h ${minutes}min`;
+		const date = new Date(session.date).toLocaleString();
+		ligne.textContent = `session de ${duree} le ${date}`;
+		historyList.appendChild(ligne);
+	});
+}
+
+//l'EventListener de la fonction displayProjectHostory
+projectSelect.addEventListener("change", () => {
+	selectedProjectName = projectSelect.value;
+	displayProjectHistory(selectedProjectName);
+});

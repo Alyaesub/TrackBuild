@@ -5,6 +5,11 @@ const inputNewProject = document.getElementById("newProjectInput");
 const buttonAddProject = document.getElementById("addProjectBtn");
 const tableProject = document.getElementById("projectTableBody");
 const projectSelect = document.getElementById("projectSelect");
+const startStopBtn = document.getElementById("startStopBtn");
+
+let timerInterval = null;
+let startTime = null;
+let isRunning = false;
 
 /**
  * fonction qui ajoute un nouveau projet dans le tableau en dessous le l'input
@@ -134,6 +139,7 @@ function displayProjectHistory(projectName) {
 	const historyList = document.getElementById("historyList");
 	const historyTitle = document.getElementById("projectHistoryTitle");
 
+	console.log("Sessions à afficher :", project.sessions);
 	//reinitialise l'affichage
 	historyList.innerHTML = "";
 	historyTitle.textContent = `Historique du projet : ${projectName}`;
@@ -147,7 +153,7 @@ function displayProjectHistory(projectName) {
 	}
 
 	//sinon on affiche les session du projet
-	project.sessions.forEach((session) => {
+	project.sessions.forEach((session, index) => {
 		const ligne = document.createElement("li");
 		const hours = Math.floor(session.duration / 3600);
 		const minutes = Math.floor((session.duration % 3600) / 60);
@@ -155,13 +161,28 @@ function displayProjectHistory(projectName) {
 		const duree = `${hours}h ${minutes}min ${secondes}sec`;
 		const date = new Date(session.date).toLocaleString();
 		ligne.textContent = `session de ${duree} le ${date}`;
+
+		const deleteBtn = document.createElement("button");
+		deleteBtn.textContent = "🗑️";
+		deleteBtn.classList.add("btn", "btn-sm", "btn-danger", "ms-2");
+		ligne.appendChild(deleteBtn);
 		historyList.appendChild(ligne);
+
+		deleteBtn.addEventListener("click", () => {
+			const confirmation = window.confirm(
+				"Etes vous sur de vouloir supprimer cette session ?"
+			);
+			if (confirmation) {
+				project.sessions.splice(index, 1);
+				saveProjects();
+				setTimeout(() => {
+					displayProjectHistory(selectedProjectName);
+				}, 0);
+			}
+		});
 	});
 }
 
-/**
- * l'EventListener de la fonction displayProjectHostory
- */
 projectSelect.addEventListener("change", () => {
 	selectedProjectName = projectSelect.value;
 	displayProjectHistory(selectedProjectName);
@@ -169,3 +190,51 @@ projectSelect.addEventListener("change", () => {
 	// Activation du bouton
 	startStopBtn.disabled = false;
 });
+
+/**
+ * function qui gére le changement d'etat du bouton Start/stop
+ */
+function toggleTimer() {
+	const timerDisplay = document.getElementById("timerDisplay");
+
+	if (!isRunning) {
+		isRunning = true;
+		startTime = Date.now();
+
+		startStopBtn.textContent = "Arreter";
+		startStopBtn.classList.remove("btn-success");
+		startStopBtn.classList.add("btn-danger");
+
+		timerInterval = setInterval(() => {
+			const elapsed = Math.floor((Date.now() - startTime) / 1000);
+			const hours = String(Math.floor(elapsed / 3600));
+			const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(
+				2,
+				"0"
+			);
+			const secondes = String(elapsed % 60).padStart(2, "0");
+			timerDisplay.textContent = `${hours}:${minutes}:${secondes}`;
+		}, 1000);
+	} else {
+		isRunning = false;
+		clearInterval(timerInterval);
+
+		const duration = Math.floor((Date.now() - startTime) / 1000);
+		const session = {
+			duration: duration,
+			date: new Date().toISOString(),
+		};
+
+		const project = projects.find((p) => p.name === selectedProjectName);
+		if (project) {
+			project.sessions.push(session);
+			saveProjects();
+		}
+		startStopBtn.textContent = "Démarrer";
+		startStopBtn.classList.remove("btn-danger");
+		startStopBtn.classList.add("btn-success");
+		timerDisplay.textContent = "00:00";
+	}
+	displayProjectHistory(selectedProjectName);
+}
+startStopBtn.addEventListener("click", toggleTimer);

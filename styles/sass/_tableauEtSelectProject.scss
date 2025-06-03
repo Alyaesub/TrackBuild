@@ -1,0 +1,37 @@
+// Tableau des projets
+.table {
+  border-radius: $border-radius;
+  margin-top: 20px;
+
+  thead {
+    background-color: $primary-color;
+    color: white;
+    th {
+      text-align: center;
+    }
+  }
+
+  tbody {
+    text-align: center;
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  }
+
+  th, td {
+    padding: 15px;
+  }
+}
+
+// Sélecteur de projet
+.form-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-select {
+  border-radius: $border-radius;
+  font-size: 1rem;
+  padding: 10px;
+}

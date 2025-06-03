@@ -1,0 +1,24 @@
+// Formulaire de gestion de projet
+input.form-control {
+  border-radius: $border-radius;
+}
+
+button {
+  border-radius: $border-radius;
+  font-weight: bold;
+}
+
+#addProjectBtn {
+  background-color: $secondary-color;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: darken($secondary-color, 10%);
+  }
+}
+
+#addProjectBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

@@ -20,21 +20,14 @@ buttonAddProject.addEventListener("click", () => {
 		alert("rentrez un nom de projet");
 		return;
 	}
+	if (projects.some((p) => p.name === projectName)) {
+		alert("Ce projet existe déjà !");
+		return;
+	}
 	projects.push({ name: projectName, sessions: [] });
 	saveProjects();
-
-	const newRow = document.createElement("tr"); //constante qui me crée un nouvelle ligne dans le tableau
-	const nameCell = document.createElement("td"); //pareil mais pour une cellule ou il y aura le titre du projet
-	nameCell.textContent = projectName; // la cellul en question
-	newRow.appendChild(nameCell); //nouvelle ligne qui a le nom de la cellule
-	tableProject.appendChild(newRow); // et création de la ligne dans le tableau
-	const actionCell = document.createElement("td");
-	actionCell.innerHTML = `
-	<button class="button btn-warning btn-sm">Modifier</button>
-	<button class="button btn-danger btn-sm">Supprimer</button>
-	`;
-	newRow.appendChild(actionCell);
-	inputNewProject.value = ""; //rest de l'input
+	loadProjects();
+	inputNewProject.value = "";
 });
 
 let projects = [];
@@ -51,20 +44,24 @@ function saveProjects() {
 function loadProjects() {
 	const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
 	projects = storedProjects;
+
+	tableProject.innerHTML = "";
+	projectSelect.innerHTML = `<option selected disabled>Choisis un projet</option>`;
+
 	projects.forEach((proj) => {
 		const newRow = document.createElement("tr"); //constante qui me crée un nouvelle ligne dans le tableau
 		const nameCell = document.createElement("td"); //pareil mais pour une cellule ou il y aura le titre du projet
 		nameCell.textContent = proj.name; // la cellul en question
 		newRow.appendChild(nameCell); //nouvelle ligne qui a le nom de la cellule
-		tableProject.appendChild(newRow); // et création de la ligne dans le tableau
+
 		const actionCell = document.createElement("td");
 		actionCell.innerHTML = `
 		<button class="button btn-warning btn-sm">Modifier</button>
 		<button class="button btn-danger btn-sm">Supprimer</button>
 		`;
 		newRow.appendChild(actionCell);
+		tableProject.appendChild(newRow); // et création de la ligne dans le tableau
 
-		//metttre les ecouteur ici pour chopper les boutton créé avec innerHtml
 		//ecouteur pou rsupprimer le projet selectionner
 		const deleteBtn = actionCell.querySelector(".btn-danger");
 		const projectName = nameCell.textContent;
@@ -78,10 +75,14 @@ function loadProjects() {
 			const projectName = nameCell.textContent;
 			modifyProject(projectName);
 		});
+
+		const option = document.createElement("option");
+		option.value = proj.name;
+		option.textContent = proj.name;
+		projectSelect.appendChild(option);
 	});
 }
 loadProjects();
-choiceProjectSelect();
 
 /**
  * fonction pour supprimer un projet du localstorage
@@ -111,21 +112,6 @@ function modifyProject(projectName) {
 		tableProject.innerHTML = "";
 		loadProjects();
 	}
-}
-
-/**
- * fonction qui permet d'afficher et de choisr un projet dans le selecte "project-select"
- */
-function choiceProjectSelect() {
-	projects = JSON.parse(localStorage.getItem("projects")) || [];
-	(projectSelect.innerHTML =
-		"<option selected disabled>Choisis un projet</option>"),
-		projects.forEach((project) => {
-			const option = document.createElement("option");
-			option.value = project.name;
-			option.textContent = project.name;
-			projectSelect.appendChild(option);
-		});
 }
 
 /**

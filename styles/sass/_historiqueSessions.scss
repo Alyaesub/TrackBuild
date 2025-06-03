@@ -1,0 +1,21 @@
+// Historique des sessions
+#projectHistoryTitle {
+  font-size: 1.5rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+#historyList {
+  margin-top: 15px;
+
+  .list-group-item {
+    border-radius: $border-radius;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: white;
+
+    &:hover {
+      background-color: #f9f9f9;
+    }
+  }
+}

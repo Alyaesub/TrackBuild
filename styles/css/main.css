@@ -1,0 +1,127 @@
+#timerDisplay {
+  font-size: 3rem;
+  font-weight: bold;
+  /* color: $primary-color; */
+  margin-bottom: 20px;
+}
+
+#startStopBtn {
+  border-radius: 8px;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  /* background-color: $primary-color; */
+  color: white;
+  border: none;
+}
+#startStopBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.table {
+  border-radius: 8px;
+  margin-top: 20px;
+}
+.table thead {
+  background-color: #007bff;
+  color: white;
+}
+.table thead th {
+  text-align: center;
+}
+.table tbody {
+  text-align: center;
+}
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+.table th, .table td {
+  padding: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-select {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  #timerDisplay {
+    font-size: 2rem;
+  }
+}
+#projectHistoryTitle {
+  font-size: 1.5rem;
+  color: #555;
+  margin-top: 20px;
+}
+
+#historyList {
+  margin-top: 15px;
+}
+#historyList .list-group-item {
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: white;
+}
+#historyList .list-group-item:hover {
+  background-color: #f9f9f9;
+}
+
+input.form-control {
+  border-radius: 8px;
+}
+
+button {
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#addProjectBtn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+#addProjectBtn:hover {
+  background-color: #1e7e34;
+}
+
+#addProjectBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #007bff;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}/*# sourceMappingURL=main.css.map */

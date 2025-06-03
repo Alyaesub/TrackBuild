@@ -1,0 +1,21 @@
+// Affichage du timer
+#timerDisplay {
+  font-size: 3rem;
+  font-weight: bold;
+  /* color: $primary-color; */
+  margin-bottom: 20px;
+}
+
+#startStopBtn {
+  border-radius: $border-radius;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  /* background-color: $primary-color; */
+  color: white;
+  border: none;
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}

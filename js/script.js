@@ -50,12 +50,45 @@ function loadProjects() {
 	projects = storedProjects;
 
 	tableProject.innerHTML = "";
-	projectSelect.innerHTML = `<option selected disabled>Choisis un projet</option>`;
+	projectSelect.innerHTML = `<option selected disabled>Choisissez un projet</option>`;
 
 	projects.forEach((proj) => {
 		const newRow = document.createElement("tr"); //constante qui me crée un nouvelle ligne dans le tableau
 		const nameCell = document.createElement("td"); //pareil mais pour une cellule ou il y aura le titre du projet
 		nameCell.textContent = proj.name; // la cellul en question
+		//ajout badge favoris
+		const badgeSessions = document.createElement("span");
+		const projectSessions = proj.sessions ? proj.sessions.length : 0;
+		if (projectSessions >= 3 && projectSessions <= 5) {
+			badgeSessions.classList.add("badge", "bg-info", "ms-2");
+			badgeSessions.textContent = `✨ En lancement (${projectSessions})`;
+			badgeSessions.setAttribute(
+				"title",
+				`${projectSessions} sessions - Lancement du projet`
+			);
+		} else if (projectSessions >= 6 && projectSessions <= 10) {
+			badgeSessions.classList.add("badge", "bg-primary", "ms-2");
+			badgeSessions.textContent = `📈 En progression (${projectSessions})`;
+			badgeSessions.setAttribute(
+				"title",
+				`${projectSessions} sessions - Projet en progression`
+			);
+		} else if (projectSessions >= 11 && projectSessions <= 20) {
+			badgeSessions.classList.add("badge", "bg-warning", "ms-2");
+			badgeSessions.textContent = `💪 Habitude installée (${projectSessions})`;
+			badgeSessions.setAttribute(
+				"title",
+				`${projectSessions} sessions - Habitude installée`
+			);
+		} else if (projectSessions >= 21) {
+			badgeSessions.classList.add("badge", "bg-success", "ms-2");
+			badgeSessions.textContent = `🔥 Master projet (${projectSessions})`;
+			badgeSessions.setAttribute(
+				"title",
+				`${projectSessions} sessions - Master du projet`
+			);
+		}
+		nameCell.appendChild(badgeSessions);
 		newRow.appendChild(nameCell); //nouvelle ligne qui a le nom de la cellule
 
 		const actionCell = document.createElement("td");
@@ -161,9 +194,36 @@ function displayProjectHistory(projectName) {
 		const date = new Date(session.date).toLocaleString();
 		ligne.textContent = `session de ${duree} le ${date}`;
 
+		let badge = null;
+		if (session.duration >= 3600 && session.duration < 7200) {
+			badge = document.createElement("span");
+			badge.textContent = "+1H";
+			badge.classList.add("badge", "bg-success", "ms-2");
+			badge.setAttribute("title", "Durée supérieure à 1 heure");
+		} else if (session.duration >= 7200 && session.duration < 10800) {
+			badge = document.createElement("span");
+			badge.textContent = "+2H";
+			badge.classList.add("badge", "bg-warning", "ms-2");
+			badge.setAttribute("title", "Durée supérieure à 2 heure");
+		} else if (session.duration >= 10800 && session.duration < 14400) {
+			badge = document.createElement("span");
+			badge.textContent = "+3H";
+			badge.classList.add("badge", "bg-danger", "ms-2");
+			badge.setAttribute("title", "Durée supérieure à 3 heure");
+		} else if (session.duration >= 14400) {
+			badge = document.createElement("span");
+			badge.textContent = "+4H";
+			badge.classList.add("badge", "bg-dark", "ms-2");
+			badge.setAttribute("title", "Durée supérieure à 4 heure");
+		}
+		if (badge) {
+			ligne.appendChild(badge);
+		}
+
 		const deleteBtn = document.createElement("button");
 		deleteBtn.textContent = "🗑️";
 		deleteBtn.classList.add("btn", "btn-sm", "btn-danger", "ms-2");
+		deleteBtn.setAttribute("title", "Supprimer cette session");
 		ligne.appendChild(deleteBtn);
 		historyList.appendChild(ligne);
 

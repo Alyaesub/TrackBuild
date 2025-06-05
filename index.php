@@ -52,11 +52,26 @@
     </div>
 
     <!-- Historique des sessions -->
-    <div>
-      <h3>Historique des sessions :</h3>
-      <h4 id="projectHistoryTitle">Aucun projet séléctionné.</h4>
+    <div class="historique-sessions card p-4 shadow-sm">
+      <h3 class="h3-historique mb-3">📂 Historique des sessions</h3>
+      <h4 id="projectHistoryTitle" class="text-muted mb-3">Aucun projet sélectionné.</h4>
+
+      <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+        <button id="resetSessionsBtn" class="btn btn-outline-danger">🧹 Réinitialiser</button>
+
+        <div class="d-flex flex-column">
+          <label for="sortSessions" class="form-label mb-1">Trier :</label>
+          <select id="sortSessions" class="form-select" style="max-width: 220px;">
+            <option value="recent">Plus récentes</option>
+            <option value="oldest">Plus anciennes</option>
+            <option value="longest">Durée la + longue</option>
+            <option value="shortest">Durée la + courte</option>
+          </select>
+        </div>
+      </div>
+
       <ul id="historyList" class="list-group">
-        <!-- Les sessions seront ajoutées ici -->
+        <!-- sessions -->
       </ul>
     </div>
   </div>

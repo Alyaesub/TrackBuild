@@ -6,6 +6,8 @@ const buttonAddProject = document.getElementById("addProjectBtn");
 const tableProject = document.getElementById("projectTableBody");
 const projectSelect = document.getElementById("projectSelect");
 const startStopBtn = document.getElementById("startStopBtn");
+const resetSessionsBtn = document.getElementById("resetSessionsBtn");
+const sortSelect = document.getElementById("sortSessions");
 
 let timerInterval = null;
 let startTime = null;
@@ -28,6 +30,7 @@ buttonAddProject.addEventListener("click", () => {
 	saveProjects();
 	loadProjects();
 	inputNewProject.value = "";
+	showToast("🚀 Projet créé avec succès", "success");
 });
 
 let projects = [];
@@ -36,6 +39,7 @@ let projects = [];
  */
 function saveProjects() {
 	localStorage.setItem("projects", JSON.stringify(projects));
+	showToast("votre session a bien etais sauvegardé", "success");
 }
 
 /**
@@ -56,8 +60,8 @@ function loadProjects() {
 
 		const actionCell = document.createElement("td");
 		actionCell.innerHTML = `
-		<button class="button btn-warning btn-sm">Modifier</button>
-		<button class="button btn-danger btn-sm">Supprimer</button>
+		<button class="button btn-warning btn-sm action-btn">Modifier</button>
+		<button class="button btn-danger btn-sm action-btn">Supprimer</button>
 		`;
 		newRow.appendChild(actionCell);
 		tableProject.appendChild(newRow); // et création de la ligne dans le tableau
@@ -66,7 +70,13 @@ function loadProjects() {
 		const deleteBtn = actionCell.querySelector(".btn-danger");
 		const projectName = nameCell.textContent;
 		deleteBtn.addEventListener("click", () => {
-			deleteProject(projectName);
+			const confirmation = window.confirm(
+				"Etes vous sur de vouloir supprimer ce projet ?"
+			);
+			if (confirmation) {
+				deleteProject(projectName);
+				showToast("le projet a bien etais supprimer", "warning");
+			}
 		});
 
 		//ecouteur pour modofier le nom d'un projet
@@ -112,6 +122,7 @@ function modifyProject(projectName) {
 		tableProject.innerHTML = "";
 		loadProjects();
 	}
+	showToast("le projet a bien etait modifier", "success");
 }
 
 /**
@@ -137,6 +148,8 @@ function displayProjectHistory(projectName) {
 		historyList.appendChild(message);
 		return;
 	}
+
+	let totalDuration = 0;
 
 	//sinon on affiche les session du projet
 	project.sessions.forEach((session, index) => {
@@ -164,9 +177,21 @@ function displayProjectHistory(projectName) {
 				setTimeout(() => {
 					displayProjectHistory(selectedProjectName);
 				}, 0);
+				showToast("votre session a bien étais supprimé", "info");
 			}
 		});
+
+		totalDuration += session.duration;
 	});
+	const totalLine = document.createElement("li");
+	totalLine.classList.add("list-group-item", "fw-bold", "text-end", "mt-2");
+
+	const hours = Math.floor(totalDuration / 3600);
+	const minutes = Math.floor((totalDuration % 3600) / 60);
+	const seconds = totalDuration % 60;
+
+	totalLine.textContent = `⏱️ Total : ${hours}h ${minutes}min ${seconds}sec`;
+	historyList.appendChild(totalLine);
 }
 
 projectSelect.addEventListener("change", () => {
@@ -224,3 +249,64 @@ function toggleTimer() {
 	displayProjectHistory(selectedProjectName);
 }
 startStopBtn.addEventListener("click", toggleTimer);
+
+/**
+ * function qui gére le reset de toutes les session d'un projet
+ */
+resetSessionsBtn.addEventListener("click", () => {
+	const project = projects.find((p) => p.name === selectedProjectName);
+	if (project) {
+		const confirmation = window.confirm(
+			"Etes vous sur de vouloir supprimer toutes les sessions ?"
+		);
+		if (confirmation) {
+			project.sessions.splice(0);
+			saveProjects();
+			setTimeout(() => {
+				displayProjectHistory(selectedProjectName);
+			}, 0);
+		}
+	}
+	showToast("les sessions ont bien etais supprimer", "warning");
+});
+
+/**
+ * function qui gére le toastMessage
+ */
+function showToast(message, type = "info") {
+	const toast = document.createElement("div");
+	toast.className = `toast toast-${type}`;
+	toast.textContent = message;
+	document.body.appendChild(toast);
+
+	setTimeout(() => {
+		toast.classList.add("show");
+	}, 10);
+
+	setTimeout(() => {
+		toast.classList.remove("show");
+		setTimeout(() => {
+			document.body.removeChild(toast);
+		}, 300);
+	}, 3000);
+}
+
+/**
+ * function qui traite le trie des session par projet
+ */
+sortSelect.addEventListener("change", () => {
+	// 1. récupérer le projet sélectionné
+	const project = projects.find((p) => p.name === selectedProjectName);
+	// 2. selon sortSelect.value, trier project.sessions
+	if (sortSelect.value === "recent") {
+		project.sessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+	} else if (sortSelect.value === "oldest") {
+		project.sessions.sort((a, b) => new Date(a.date) - new Date(b.date));
+	} else if (sortSelect.value === "longest") {
+		project.sessions.sort((a, b) => b.duration - a.duration);
+	} else if (sortSelect.value === "shortest") {
+		project.sessions.sort((a, b) => a.duration - b.duration);
+	}
+	// 3. réafficher avec displayProjectHistory()
+	displayProjectHistory(selectedProjectName);
+});

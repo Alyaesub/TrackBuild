@@ -19,8 +19,20 @@
     }
   }
 
+  .action-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: $border-radius;
+  margin-right: 8px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
   th, td {
     padding: 15px;
+    align-items: center;
   }
 }
 
@@ -28,6 +40,7 @@
 .form-label {
   font-weight: bold;
   color: #555;
+  margin-top: 15px;
 }
 
 .form-select {

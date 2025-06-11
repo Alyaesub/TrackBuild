@@ -12,6 +12,7 @@ const sortSelect = document.getElementById("sortSessions");
 let timerInterval = null;
 let startTime = null;
 let isRunning = false;
+let pieChart = null;
 
 /**
  * fonction qui ajoute un nouveau projet dans le tableau en dessous le l'input
@@ -41,6 +42,8 @@ function saveProjects() {
 	localStorage.setItem("projects", JSON.stringify(projects));
 	showToast("votre session a bien etais sauvegardé", "success");
 	displayWeeklyStats();
+	displayTimeDistributionChart();
+	updateTopProjectsThisWeek();
 }
 
 /**
@@ -129,6 +132,8 @@ function loadProjects() {
 loadProjects();
 displayWeeklyStats();
 displayWeeklyStatsByProject();
+displayTimeDistributionChart();
+updateTopProjectsThisWeek();
 
 /**
  * fonction pour supprimer un projet du localstorage
@@ -476,4 +481,107 @@ function displayWeeklyStatsByProject() {
 			statsContainer.appendChild(statLine);
 		}
 	});
+}
+
+/**
+ * function qui gére le camenbere
+ */
+function displayTimeDistributionChart() {
+	const ctx = document
+		.getElementById("timeDistributionChart")
+		.getContext("2d");
+
+	const projectDurations = projects
+		.map((project) => {
+			const total = project.sessions.reduce(
+				(acc, s) => acc + s.duration,
+				0
+			);
+			return { name: project.name, duration: total };
+		})
+		.filter((p) => p.duration > 0); // Ne garde que ceux avec du temps
+
+	const labels = projectDurations.map((p) => p.name);
+	const durations = projectDurations.map((p) => p.duration);
+
+	// Conversion secondes en heures pour affichage + lisibilité
+	const durationInHours = durations.map((d) => (d / 3600).toFixed(1));
+
+	// Détruire l’ancien graphique s’il existe
+	if (pieChart) {
+		pieChart.destroy();
+	}
+
+	pieChart = new Chart(ctx, {
+		type: "pie",
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					label: "Temps total par projet (en heures)",
+					data: durationInHours,
+					backgroundColor: [
+						"#4e73df",
+						"#1cc88a",
+						"#36b9cc",
+						"#f6c23e",
+						"#e74a3b",
+						"#858796",
+						"#5a5c69",
+					],
+				},
+			],
+		},
+		options: {
+			responsive: true,
+			plugins: {
+				legend: {
+					position: "bottom",
+				},
+				tooltip: {
+					callbacks: {
+						label: function (context) {
+							return `${context.label} : ${context.parsed} h`;
+						},
+					},
+				},
+			},
+		},
+	});
+}
+
+/**
+ * fonction qui gére la liste des favories dans weeklyStat
+ */
+function updateTopProjectsThisWeek() {
+	const list = document.getElementById("weekFavoriteProject");
+	list.innerHTML = "";
+
+	const projectStats = [];
+
+	projects.forEach((project) => {
+		const sessionsThisWeek = project.sessions.filter((session) => {
+			const sessionDate = new Date(session.date);
+			const now = new Date();
+			const firstDayOfWeek = new Date(
+				now.setDate(now.getDate() - now.getDay())
+			);
+			return sessionDate >= firstDayOfWeek;
+		});
+		if (sessionsThisWeek.length > 0) {
+			projectStats.push({
+				name: project.name,
+				count: sessionsThisWeek.length,
+			});
+		}
+	});
+
+	projectStats
+		.sort((a, b) => b.count - a.count)
+		.slice(0, 3)
+		.forEach((p) => {
+			const li = document.createElement("li");
+			li.textContent = `🔥 ${p.name} (${p.count} sessions)`;
+			list.appendChild(li);
+		});
 }

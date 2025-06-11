@@ -1,0 +1,28 @@
+// Reset et style global
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: $background-color;
+  color: #333;
+}
+
+// Conteneur principal
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+// Titre principal
+h1 {
+  font-size: 2.5rem;
+  color: $primary-color;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}

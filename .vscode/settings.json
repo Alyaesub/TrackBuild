@@ -1,0 +1,11 @@
+{
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": "/styles/css",
+    }
+  ],
+  "liveSassCompile.settings.generateMap": true,
+  "window.autoDetectColorScheme": false,
+}

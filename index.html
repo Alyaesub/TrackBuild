@@ -14,11 +14,19 @@
 <body class="bg-light py-5">
 
   <div class="container">
-    <h1 class="mb-4 text-center">TrackBuild</h1>
+      <h1 class="mb-4 text-center">TrackBuild</h1>
+      <div class="d-flex flex-wrap justify-content-center">
+        <div id="weeklyStats" class="p-3 mt-4s">
+          <h4 class="text-primary">📊 Statistiques total hebdomadaire</h4>
+          <p id="weekSessionsCount">Sessions cette semaine : 0</p>
+          <p id="weekTotalDuration">Temps total : 0h 0min 0sec</p>
+        </div>
 
+        <div id="projectWeeklyStats" class="p-3 mt-4 weekly-stats-box"></div>
+      </div>
     <!-- Gestion des projets -->
-    <div class="mb-4">
-      <h3>Gérer vos projets</h3>
+    <div class="mb-4 gestionProjet">
+      <h3>🗃️ Gérer vos projets</h3>
       <div class="input-group mb-3">
         <input type="text" id="newProjectInput" class="form-control" placeholder="Nom du projet">
         <button id="addProjectBtn" class="btn btn-success">Ajouter</button>

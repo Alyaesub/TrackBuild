@@ -40,6 +40,7 @@ let projects = [];
 function saveProjects() {
 	localStorage.setItem("projects", JSON.stringify(projects));
 	showToast("votre session a bien etais sauvegardé", "success");
+	displayWeeklyStats();
 }
 
 /**
@@ -126,6 +127,8 @@ function loadProjects() {
 	});
 }
 loadProjects();
+displayWeeklyStats();
+displayWeeklyStatsByProject();
 
 /**
  * fonction pour supprimer un projet du localstorage
@@ -239,6 +242,7 @@ function displayProjectHistory(projectName) {
 				}, 0);
 				showToast("votre session a bien étais supprimé", "info");
 			}
+			displayWeeklyStatsByProject();
 		});
 
 		totalDuration += session.duration;
@@ -307,6 +311,7 @@ function toggleTimer() {
 		timerDisplay.textContent = "00:00";
 	}
 	displayProjectHistory(selectedProjectName);
+	displayWeeklyStatsByProject();
 }
 startStopBtn.addEventListener("click", toggleTimer);
 
@@ -328,6 +333,7 @@ resetSessionsBtn.addEventListener("click", () => {
 		}
 	}
 	showToast("les sessions ont bien etais supprimer", "warning");
+	displayWeeklyStatsByProject();
 });
 
 /**
@@ -370,3 +376,104 @@ sortSelect.addEventListener("change", () => {
 	// 3. réafficher avec displayProjectHistory()
 	displayProjectHistory(selectedProjectName);
 });
+
+/**
+ * function qui gére les session hebdomadaire
+ */
+function getSessionsThisWeek() {
+	const now = new Date();
+	const startOfWeek = new Date(now);
+	startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+	startOfWeek.setHours(0, 0, 0, 0);
+
+	const endOfWeek = new Date(startOfWeek);
+	endOfWeek.setDate(startOfWeek.getDate() + 6);
+	endOfWeek.setHours(23, 59, 59, 999);
+
+	let sessionsThisWeek = [];
+
+	projects.forEach((project) => {
+		project.sessions?.forEach((session) => {
+			const sessionDate = new Date(session.date);
+			if (sessionDate >= startOfWeek && sessionDate <= endOfWeek) {
+				sessionsThisWeek.push(session);
+			}
+		});
+	});
+
+	return sessionsThisWeek;
+}
+
+function displayWeeklyStats() {
+	const sessions = getSessionsThisWeek();
+	const sessionCount = sessions.length;
+
+	let totalDuration = 0;
+	sessions.forEach((session) => {
+		totalDuration += session.duration;
+	});
+
+	const hours = Math.floor(totalDuration / 3600);
+	const minutes = Math.floor((totalDuration % 3600) / 60);
+	const seconds = totalDuration % 60;
+
+	document.getElementById(
+		"weekSessionsCount"
+	).textContent = `Sessions cette semaine : ${sessionCount}`;
+	document.getElementById(
+		"weekTotalDuration"
+	).textContent = `Temps total : ${hours}h ${minutes}min ${seconds}sec`;
+}
+
+/**
+ * fonction qui gére les stats hebdo par projets
+ */
+function getWeeklyStatsByProject() {
+	const startOfWeek = new Date();
+	startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // dimanche
+
+	const stats = {};
+
+	projects.forEach((project) => {
+		let duration = 0;
+		project.sessions.forEach((session) => {
+			const sessionDate = new Date(session.date);
+			if (sessionDate >= startOfWeek) {
+				duration += session.duration;
+			}
+		});
+		stats[project.name] = duration;
+	});
+
+	return stats;
+}
+
+function displayWeeklyStatsByProject() {
+	const statsContainer = document.getElementById("projectWeeklyStats");
+	statsContainer.innerHTML =
+		"<h4>📊 Temps passé cette semaine par projet :</h4>";
+
+	const startOfWeek = new Date();
+	startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // dimanche
+
+	projects.forEach((project) => {
+		let totalDuration = 0;
+
+		project.sessions.forEach((session) => {
+			const sessionDate = new Date(session.date);
+			if (sessionDate >= startOfWeek) {
+				totalDuration += session.duration;
+			}
+		});
+
+		if (totalDuration > 0) {
+			const hours = Math.floor(totalDuration / 3600);
+			const minutes = Math.floor((totalDuration % 3600) / 60);
+			const seconds = totalDuration % 60;
+
+			const statLine = document.createElement("p");
+			statLine.textContent = `🛠️ ${project.name} : ${hours}h ${minutes}min ${seconds}sec`;
+			statsContainer.appendChild(statLine);
+		}
+	});
+}

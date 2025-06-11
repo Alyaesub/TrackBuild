@@ -1,7 +1,21 @@
 // Formulaire de gestion de projet
+
+.gestionProjet {
+  margin-top: 2rem;
+
+  h3{
+    font-size: 1.8rem;
+    color: #007bff;
+    font-weight: bold;
+}
+}
+
+
+
 input.form-control {
   border-radius: $border-radius;
 }
+
 
 button {
   border-radius: $border-radius;

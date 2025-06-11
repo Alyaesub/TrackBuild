@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #timerDisplay {
   font-size: 3rem;
   font-weight: bold;
@@ -159,12 +160,12 @@ body {
   padding: 30px;
 }
 
-h1 {
+.h1 {
   font-size: 2.5rem;
   color: #007bff;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
 }
 
 .toast {
@@ -208,12 +209,22 @@ h1 {
   transform: translateX(0);
 }
 
+#weeklyStats,
+#pieChartContainer,
+#projectWeeklyStats {
+  margin-right: 30px;
+}
+#weeklyStats:last-child,
+#pieChartContainer:last-child,
+#projectWeeklyStats:last-child {
+  margin-right: 0;
+}
+
 #weeklyStats {
   background: #eef5ff;
   border-left: 5px solid #0d6efd;
   border-radius: 12px;
   padding: 1.5rem;
-  margin: 20px auto;
   max-width: 600px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -230,13 +241,33 @@ h1 {
   color: #333;
   margin: 0.2rem 0;
 }
+#weeklyStats .fw-bold {
+  margin-top: 1.2rem;
+  color: #0d6efd;
+}
+#weeklyStats #weekFavoriteProject {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+}
+#weeklyStats #weekFavoriteProject li {
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+  color: #333;
+  position: relative;
+  padding-left: 1.5rem;
+}
+#weeklyStats #weekFavoriteProject li::before {
+  content: "⭐";
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+}
 
 .weekly-stats-box {
   background: #eef5ff;
   border-left: 5px solid #0d6efd;
   border-radius: 12px;
   padding: 1.5rem;
-  margin: 20px auto;
   max-width: 600px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -248,4 +279,30 @@ h1 {
 .weekly-stats-box p {
   font-size: 1rem;
   margin: 0.3rem 0;
+}
+
+.stats-box {
+  margin-right: 20px;
+}
+
+#pieChartContainer {
+  background: #eef5ff;
+  border-left: 5px solid #0d6efd;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 600px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+#pieChartContainer h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #0d6efd;
+}
+#pieChartContainer canvas {
+  display: block;
+  margin: 0 auto 1rem auto;
+}
+#pieChartContainer button {
+  margin-top: 0.5rem;
 }/*# sourceMappingURL=main.css.map */

@@ -125,11 +125,12 @@ git push origin ma-feature
 
 ## 💡 Idées futures
 
--   [ ] Export des sessions au format CSV / JSON
+-   [x] Export des sessions au format CSV / JSON
 -   [x] Ajout de catégories ou tags personnalisés
 -   [ ] Synchronisation avec une base de données distante (ex : SQLite ou MongoDB)
 -   [x] Interface avec graphiques (ex : Recharts, Chart.js)
 -   [ ] Authentification pour version multi-utilisateur
+-   [ ] Portage en application bureau (Electron)
 
 ---
 

@@ -1,0 +1,32 @@
+# ----------------------------------------------------------------------
+# Forcer HTTPS
+# ----------------------------------------------------------------------
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ----------------------------------------------------------------------
+# Protection dossiers sensibles (optionnel)
+# ----------------------------------------------------------------------
+<FilesMatch "\.(env|htaccess|git|sql|log)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# ----------------------------------------------------------------------
+# Cache navigateur (améliore les performances)
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 1 hour"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Encodage UTF-8 par défaut
+# ----------------------------------------------------------------------
+AddDefaultCharset UTF-8

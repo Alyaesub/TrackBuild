@@ -66,6 +66,27 @@ _(ou sers-le avec Live Server si tu bosses en local avec VS Code)_
 ├── /assets # Icônes, images (si présents)
 └── README.md # Ce fichier
 
+// 📁 storage.js
+// --> contient saveProjects(), loadProjects()
+
+// 📁 projects.js
+// --> contient buttonAddProject, deleteProject(), modifyProject()
+
+// 📁 session.js
+// --> contient displayProjectHistory(), toggleTimer(), getSessionsThisWeek(), etc.
+
+// 📁 timer.js
+// --> contient la logique du bouton Start/Stop
+
+// 📁 toast.js
+// --> contient showToast(message, type)
+
+// 📁 stats.js
+// --> contient displayWeeklyStats(), displayWeeklyStatsByProject(), displayTimeDistributionChart(), updateTopProjectsThisWeek()
+
+// 📁 export.js
+// --> contient l'export CSV
+
 ---
 
 ## 🤝 Contribuer

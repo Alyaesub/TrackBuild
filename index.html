@@ -23,8 +23,8 @@
 
   <div class="container">
       <h1 class=" h1">TrackBuild</h1>
-      <div class="d-flex justify-content-center">
-        <div id="weeklyStats" class="p-3 mt-4s">
+      <div class="row gx-4 gy-4 ">
+        <div id="weeklyStats" class="col-12 col-lg-4">
           <h4 class="text-primary">📊 Statistiques total hebdomadaire</h4>
           <p id="weekSessionsCount">Sessions cette semaine : 0</p>
           <p id="weekTotalDuration">Temps total : 0h 0min 0sec</p>
@@ -33,14 +33,14 @@
             <!-- Liens dynamiques injectés ici -->
           </ul>
         </div>
-        <div id="pieChartContainer" class="stats-box">
+        <div id="pieChartContainer" class="stats-box col-12 col-lg-4">
           <h4 class="text-primary">📈 Répartition du temps</h4>
           <canvas id="timeDistributionChart" width="250" height="250"></canvas>
           <button id="downloadChartBtn" class="btn btn-outline-primary text-center mt-3">
             📥 Exporter le camembert (PNG)
           </button>
         </div>
-        <div id="projectWeeklyStats" class="p-3 weekly-stats-box"></div>
+        <div id="projectWeeklyStats" class=" weekly-stats-box col-12 col-lg-4"></div>
       </div>
     <!-- Gestion des projets -->
     <div class="mb-4 gestionProjet">

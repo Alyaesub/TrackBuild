@@ -59,6 +59,18 @@ function displayTimeDistributionChart() {
 		.getElementById("timeDistributionChart")
 		.getContext("2d");
 
+	/**
+	 * version prod
+	 */
+	/* 		console.log("Chart loaded");
+	const canva = document
+		.getElementById("timeDistributionChart");
+		if (!canva) {
+		    console.warn("Canvas 'timeDistributionChart' non trouvé.");
+		    return;
+		}
+		const ctx = canva.getContext("2d"); */
+
 	const projectDurations = projects
 		.map((project) => {
 			const total = project.sessions.reduce(

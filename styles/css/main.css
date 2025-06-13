@@ -212,20 +212,29 @@ body {
 #weeklyStats,
 #pieChartContainer,
 #projectWeeklyStats {
-  margin-right: 30px;
-}
-#weeklyStats:last-child,
-#pieChartContainer:last-child,
-#projectWeeklyStats:last-child {
+  width: 100%;
   margin-right: 0;
+  margin-bottom: 1rem;
 }
 
+@media (min-width: 992px) {
+  #weeklyStats,
+  #pieChartContainer,
+  #projectWeeklyStats {
+    width: 30%;
+    margin-right: 20px;
+  }
+  #weeklyStats:last-child,
+  #pieChartContainer:last-child,
+  #projectWeeklyStats:last-child {
+    margin-right: 0;
+  }
+}
 #weeklyStats {
   background: #eef5ff;
   border-left: 5px solid #0d6efd;
   border-radius: 12px;
   padding: 1.5rem;
-  max-width: 600px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 #weeklyStats h4 {
@@ -268,7 +277,6 @@ body {
   border-left: 5px solid #0d6efd;
   border-radius: 12px;
   padding: 1.5rem;
-  max-width: 600px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 .weekly-stats-box h4 {
@@ -282,7 +290,7 @@ body {
 }
 
 .stats-box {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 #pieChartContainer {
@@ -290,7 +298,6 @@ body {
   border-left: 5px solid #0d6efd;
   border-radius: 12px;
   padding: 1.5rem;
-  max-width: 600px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
@@ -305,4 +312,17 @@ body {
 }
 #pieChartContainer button {
   margin-top: 0.5rem;
+}
+
+@media (max-width: 991.98px) {
+  #pieChartContainer canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+@media (min-width: 992px) {
+  #pieChartContainer canvas {
+    width: 250px !important;
+    height: 250px !important;
+  }
 }/*# sourceMappingURL=main.css.map */
